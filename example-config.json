@@ -3,5 +3,7 @@
     "dtoken": "BOT TOKEN",
     "mtoken": "MASTODON APP TOKEN",
     "secret": "MASTODON APP SECRET KEY",
-    "key": "MASTODON ACCESS KEY"
+    "key": "MASTODON ACCESS KEY",
+    "apiURL": "https://YOUR.INSTANCE",
+    "ID": "YOUR DISCORD ID"
 }

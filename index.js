@@ -1,32 +1,56 @@
 const Mastodon = require('mastodon-api');
 const Discord = require('discord.js');
 // const db = require('quick.db');
-const {prefix, dtoken, mtoken, key, secret} = require('./config.json');
+const {prefix, dtoken, mtoken, key, secret, apiURL, ID} = require('./config.json');
 const D = new Discord.Client();
+
+
+
 D.on('ready', () => {
     console.log('Connected to Discord');
     D.user.setActivity('Mastodon | ' + prefix + 'stat', 'WATCHING');
 })
+
+const M = new Mastodon({
+    client_key: key,
+    client_secret: secret,
+    access_token: mtoken,
+    timeout_ms: 60 * 1000,
+    api_url: apiURL + '/api/v1/'
+})
+
+
 D.on('message', async mas =>{
+    
     if(mas.author.bot) return;
     if(mas.content.indexOf(prefix) !== 0) return;
+    
     const words = mas.content.slice(prefix.length).trim().split(/ +/g);
     const target = words.shift().toLowerCase();
-    if(target === 'stat'){
-        let stat = words.join(' ');
+    
+    if(target === 'stat' || target === 'status'){
+        let status = words.join(' ');
         let params = {
-            status: stat + '\n\n\nSent by: ' + mas.author.tag + ' in ' + mas.guild.name
+            status: status
         }
+    
+        
         M.post('statuses', params, (error, data) => {
             if (error){
                 console.log(error)
             } else {
                 console.log(data)
+                mas.channel.send(`Status update sent.\n<${data.uri}>`)
             }
         });
+
+
     }
+
+
+
     if(target === 'ev' || target === 'eval'){
-        if(mas.author.id !== 'YOUR ID') return mas.channel.send("`You're not my Developer!`");
+        if(mas.author.id !== ID) return mas.channel.send("`You're not my Developer!`");
         // ? Easy
         const pu = mas.channel
         let command = mas.content.slice(prefix.length);
@@ -39,15 +63,15 @@ D.on('message', async mas =>{
         if (ev.length > 1950) {
           ev = ev.substr(0, 1950);
         }
-        deep = new Discord.RichEmbed();
+        embed = new Discord.RichEmbed();
         let token = dtoken.replace(/\./g, "\.")
         let tooken = new RegExp(token, 'g')
         ev = ev.replace(tooken, `haha yes`);
-            deep.addField("Input", "```js\n" + code + "```")
+            embed.addField("Input", "```js\n" + code + "```")
             .addField("Eval", "```js\n"+ev+"```");
-            mas.channel.send(deep)
+            mas.channel.send(embed)
       } catch(err) {
-        mas.channel.send(deep.setDescription("```js\n" + err + "```"));
+        mas.channel.send(embed.setDescription("```js\n" + err + "```"));
       }
     }
 
