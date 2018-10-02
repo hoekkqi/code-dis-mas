@@ -1,9 +1,19 @@
+// Made my code#3621
+// Github Repo: https://github.com/codepupper/discord-mastodon-bridge
+// Mastodon https://pounced-on.me/@code
+// Website https://e-six-two.one
+
 const Mastodon = require('mastodon-api');
 const Discord = require('discord.js');
-// const db = require('quick.db');
-const {prefix, dtoken, mtoken, key, secret, apiURL, ID} = require('./config.json');
+const {prefix, dtoken, mtoken, key, secret, instanceURL, ID} = require('./config.json');
 const D = new Discord.Client();
-
+const M = new Mastodon({
+    client_key: key,
+    client_secret: secret,
+    access_token: mtoken,
+    timeout_ms: 60 * 1000,
+    api_url: instanceURL + '/api/v1/'
+})
 
 
 D.on('ready', () => {
@@ -11,13 +21,6 @@ D.on('ready', () => {
     D.user.setActivity('Mastodon | ' + prefix + 'stat', 'WATCHING');
 })
 
-const M = new Mastodon({
-    client_key: key,
-    client_secret: secret,
-    access_token: mtoken,
-    timeout_ms: 60 * 1000,
-    api_url: apiURL + '/api/v1/'
-})
 
 
 D.on('message', async mas =>{
@@ -38,6 +41,7 @@ D.on('message', async mas =>{
         M.post('statuses', params, (error, data) => {
             if (error){
                 console.log(error)
+                mas.channel.send("```js\n" + error + "```")
             } else {
                 console.log(data)
                 mas.channel.send(`Status update sent.\n<${data.uri}>`)
