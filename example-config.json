@@ -1,0 +1,7 @@
+{
+    "prefix": "PREFIX-HERE",
+    "dtoken": "BOT TOKEN",
+    "mtoken": "MASTODON APP TOKEN",
+    "secret": "MASTODON APP SECRET KEY",
+    "key": "MASTODON ACCESS KEY"
+}
