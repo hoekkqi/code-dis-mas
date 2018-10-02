@@ -32,3 +32,10 @@ Feel free to make a Pull request and fix some things, otherwise just open a Issu
 # Crediting
 
 Please do not remove my Signature from the Code, other than that you can do with  this whatever you want!~
+
+# FAQ
+> **Q:** Will you make this work for twitter as well?\
+> **A:** Due to Twitter's new API/Dev Stuff, no.
+
+> **Q:** Are CW's, Imageposting, NSFW-Marking going to happen?\
+> **A:** Most likely, yes. Though I don't know when so please don't bug me about it.
