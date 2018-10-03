@@ -15,24 +15,29 @@ const M = new Mastodon({
     api_url: instanceURL + '/api/v1/'
 })
 
+let listen = 'LISTENING'
+let watch = 'WATCHING'
+let play = 'PLAYING'
 
 D.on('ready', () => {
     console.log('Connected to Discord');
-    D.user.setActivity('Mastodon | ' + prefix + 'stat', 'WATCHING');
+    D.user.setActivity(`Mastodon updates | ${prefix}help`, {type: listen});
 })
 
 
 
-D.on('message', async mas =>{
+D.on('message', async µ =>{
     
-    if(mas.author.bot) return;
-    if(mas.content.indexOf(prefix) !== 0) return;
+    if(µ.author.bot) return;
+    if(µ.content.indexOf(prefix) !== 0) return;
     
-    const words = mas.content.slice(prefix.length).trim().split(/ +/g);
+    const words = µ.content.slice(prefix.length).trim().split(/ +/g);
     const target = words.shift().toLowerCase();
     
     if(target === 'stat' || target === 'status'){
+        if(µ.author.id !== ID) return;
         let status = words.join(' ');
+        if(status === '') return µ.channel.send('Please write something, you cannot send empty status updates.');
         let params = {
             status: status
         }
@@ -41,23 +46,26 @@ D.on('message', async mas =>{
         M.post('statuses', params, (error, data) => {
             if (error){
                 console.log(error)
-                mas.channel.send("```js\n" + error + "```")
+                µ.channel.send("```js\n" + error + "```")
             } else {
                 console.log(data)
-                mas.channel.send(`Status update sent.\n<${data.uri}>`)
+                let E = new Discord.RichEmbed();
+                E.setTitle('Status Update')
+                 .setAuthor(µ.author.tag, µ.author.avatarURL)
+                 .setDescription(`[Click here to see it](${data.uri})`)
+                 .setThumbnail(µ.author.avatarURL)
+                 µ.channel.send(E);
             }
         });
 
 
     }
 
-
-
     if(target === 'ev' || target === 'eval'){
-        if(mas.author.id !== ID) return mas.channel.send("`You're not my Developer!`");
+        if(µ.author.id !== ID) return µ.channel.send("`You're not my Developer!`");
         // ? Easy
-        const pu = mas.channel
-        let command = mas.content.slice(prefix.length);
+        const pu = µ.channel
+        let command = µ.content.slice(prefix.length);
         let split = command.split(" ");
         command = split[0];
         split.shift();
@@ -73,10 +81,32 @@ D.on('message', async mas =>{
         ev = ev.replace(tooken, `haha yes`);
             embed.addField("Input", "```js\n" + code + "```")
             .addField("Eval", "```js\n"+ev+"```");
-            mas.channel.send(embed)
+            µ.channel.send(embed)
       } catch(err) {
-        mas.channel.send(embed.setDescription("```js\n" + err + "```"));
+        µ.channel.send(embed.setDescription("```js\n" + err + "```"));
       }
+    }
+
+    if(target === 'credits' || target === 'info'){
+        let P = require('./package.json');
+        let creator = D.users.get(P.creator);
+
+        let E = new Discord.RichEmbed();
+        E.setTitle(P.name)
+         .setColor(0x36393E)
+         .setDescription(P.description)
+         .addField('Repository', `[${P.name}](${P.repository.url})`)
+         .addField('Version', P.version, true)
+         .addField('Dependencies', "discord.js\nmastodon-api", true)
+         .addField('Creator', creator + " // " + creator.tag, true)
+         .addField('Website', P.website, true)
+         .addField('Changelog', P.changelog)
+         .setThumbnail(creator.avatarURL)
+         .setFooter('Made by ' + creator.tag, creator.avatarURL)
+
+
+        µ.channel.send(E);
+
     }
 
 
