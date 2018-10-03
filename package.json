@@ -4,7 +4,7 @@
   "description": "A Discord to Mastodon Bridge Bot",
   "website": "[@code@pounced-on.me](https://pounced-on.me/@code)",
   "creator": "318044130796109825",
-  "changelog": "```md\n# Added Credits\n\n# Various other things```",
+  "changelog": "```md\n# Added Credits\n# Added help\n# Various other things```",
   "main": "index.js",
   "scripts": {
     "test": "nodemon index.js"

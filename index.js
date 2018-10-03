@@ -21,7 +21,7 @@ let play = 'PLAYING'
 
 D.on('ready', () => {
     console.log('Connected to Discord');
-    D.user.setActivity(`Mastodon updates | ${prefix}help`, {type: listen});
+    D.user.setActivity(`mastodon | ${prefix}h`, {type: watch});
 })
 
 
@@ -33,6 +33,17 @@ D.on('message', async µ =>{
     
     const words = µ.content.slice(prefix.length).trim().split(/ +/g);
     const target = words.shift().toLowerCase();
+
+    if(target === 'h' || target === 'help'){
+        let E = new Discord.RichEmbed();
+        E.setDescription('[] = __Important__')
+         .addField('Help', `**•** \`${prefix}\`**h|help** - Shows this message
+         **•** \`${prefix}\`**info|credits** - Show the Source Code
+        **•** \`${prefix}\`**stat|status** \`[Your Text]\` - Sends your status
+        **•** \`${prefix}\`**ev|eval** - Evaluate code`)
+
+        µ.channel.send(E);
+    }
     
     if(target === 'stat' || target === 'status'){
         if(µ.author.id !== ID) return;
