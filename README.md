@@ -1,5 +1,6 @@
-# Mastodon x Discord by <a href='https://pounced-on.me/@code'>@code#3621</a>
+# Mastodon x Discord by <a href='https://twitter.com/codepupper'>@ryden#3621</a>
 ### For help join [my Support Server](https://discord.gg/xNAcF8m "https://discord.gg/xNAcF8m")
+### Like what I've done? Why not [Support me on Patreon?](https://patreon.com/DiscordedPixel "patreon.com")
 
 
 ## How to set it up:
