@@ -1,5 +1,5 @@
-// Made my code#3621
-// Github Repo: https://github.com/codepupper/discord-mastodon-bridge
+// Made by ryden#3621
+// Github Repo: https://github.com/codepupper/code-dis-mas
 // Mastodon https://pounced-on.me/@code
 // Website https://e-six-two.one
 
