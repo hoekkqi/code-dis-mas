@@ -1,6 +1,8 @@
 // Made by ryden#3621
 // Github Repo: https://github.com/codepupper/code-dis-mas
 // Mastodon https://pounced-on.me/@code
+
+// Website https://codepupper.online
 // Website https://e-six-two.one
 
 const Mastodon = require('mastodon-api');
@@ -26,10 +28,10 @@ D.on('ready', () => {
 
 
 
-D.on('message', async µ =>{
+D.on('message', async m =>{
     
-    if(µ.author.bot) return;
-    if(µ.content.indexOf(prefix) !== 0) return;
+    if(m.author.bot) return;
+    if(m.content.indexOf(prefix) !== 0) return;
     
     const words = µ.content.slice(prefix.length).trim().split(/ +/g);
     const target = words.shift().toLowerCase();
@@ -42,13 +44,13 @@ D.on('message', async µ =>{
         **•** \`${prefix}\`**stat|status** \`[Your Text]\` - Sends your status
         **•** \`${prefix}\`**ev|eval** - Evaluate code`)
 
-        µ.channel.send(E);
+        m.channel.send(E);
     }
     
     if(target === 'stat' || target === 'status'){
-        if(µ.author.id !== ID) return;
+        if(m.author.id !== ID) return;
         let status = words.join(' ');
-        if(status === '') return µ.channel.send('Please write something, you cannot send empty status updates.');
+        if(status === '') return m.channel.send('Please write something, you cannot send empty status updates.');
         let params = {
             status: status
         }
@@ -57,15 +59,15 @@ D.on('message', async µ =>{
         M.post('statuses', params, (error, data) => {
             if (error){
                 console.log(error)
-                µ.channel.send("```js\n" + error + "```")
+                m.channel.send("```js\n" + error + "```")
             } else {
                 console.log(data)
                 let E = new Discord.RichEmbed();
                 E.setTitle('Status Update')
-                 .setAuthor(µ.author.tag, µ.author.avatarURL)
+                 .setAuthor(m.author.tag, m.author.avatarURL)
                  .setDescription(`[Click here to see it](${data.uri})`)
-                 .setThumbnail(µ.author.avatarURL)
-                 µ.channel.send(E);
+                 .setThumbnail(m.author.avatarURL)
+                 m.channel.send(E);
             }
         });
 
@@ -73,10 +75,10 @@ D.on('message', async µ =>{
     }
 
     if(target === 'ev' || target === 'eval'){
-        if(µ.author.id !== ID) return µ.channel.send("`You're not my Developer!`");
+        if(m.author.id !== ID) return m.channel.send("`You're not my Developer!`");
         // ? Easy
-        const pu = µ.channel
-        let command = µ.content.slice(prefix.length);
+        const pu = m.channel
+        let command = m.content.slice(prefix.length);
         let split = command.split(" ");
         command = split[0];
         split.shift();
@@ -92,9 +94,9 @@ D.on('message', async µ =>{
         ev = ev.replace(tooken, `haha yes`);
             embed.addField("Input", "```js\n" + code + "```")
             .addField("Eval", "```js\n"+ev+"```");
-            µ.channel.send(embed)
+            m.channel.send(embed)
       } catch(err) {
-        µ.channel.send(embed.setDescription("```js\n" + err + "```"));
+        m.channel.send(embed.setDescription("```js\n" + err + "```"));
       }
     }
 
@@ -116,7 +118,7 @@ D.on('message', async µ =>{
          .setFooter('Made by ' + creator.tag, creator.avatarURL)
 
 
-        µ.channel.send(E);
+        m.channel.send(E);
 
     }
 
